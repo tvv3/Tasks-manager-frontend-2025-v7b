@@ -1,29 +1,34 @@
-# vue-tasks-v4-github
 
-This template should help get you started developing with Vue 3 in Vite.
+# Vue 3 Frontend vers 7b
 
-## Recommended IDE Setup
+Frontend-ul aplicației care consumă API-ul Laravel 11 Task Manager v7b, folosește Pinia și fetch pentru comunicare cu backend-ul.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Pre-rechizite
 
-## Customize configuration
+- Node.js >= 18
+- npm
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## Instalare
 
-## Project Setup
+1. Clonează repository:
+   ```bash
+   git clone <URL_REPO_FRONTEND>
+   cd nume_proiect_frontend
 
-```sh
+2. Instalează dependențele:
+
 npm install
-```
 
-### Compile and Hot-Reload for Development
+3. In vite.config.js trebuie adaugat:
+server: {
+     port:3000,
 
-```sh
-npm run dev
-```
+  },
 
-### Compile and Minify for Production
+  pentru a rula pe portul 3000.
 
-```sh
-npm run build
-```
+# Rulare locala
+  Se ruleaza intai backend-ul pe portul 8000 si apoi front end-ul pe portul 3000 cu 
+
+  npm run dev
+

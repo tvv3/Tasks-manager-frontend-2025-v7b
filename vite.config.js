@@ -16,26 +16,10 @@ export default defineConfig({
     },
   },//resolve
 
-  //added by me: (will be changed in production) must use " not ' below
+  //added by me: (will be changed in production) 
   server: {
      port:3000,
 
-     /*
-     proxi: {
-      "/api":{
-        target: "http://localhost:8000",
-        changeOrigin: true,
-       // secure:false,
-
-        
-       // rewrite: (path) => path.replace(/^\/api/, ''),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        //end settings for proxi
-      },
-     },*/
   },
 
 })
