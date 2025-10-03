@@ -192,13 +192,13 @@ export const useAuthStore = defineStore("AuthStore", {
         const data = await res.json();
 
         if (!res.ok) {
-          this.errors = data.errors || { form: [data.message || "Password change failed"] };
+          this.errors = data.errors || { email: [data.message || "Password change failed"] };
         } else {
           this.errors = {};
           this.successMessage = "Password changed successfully!";
         }
       } catch (err) {
-        this.errors = { form: ["Network error: " + err.message] };
+        this.errors = { email: ["Network error: " + err.message] };
       }
     },
   },

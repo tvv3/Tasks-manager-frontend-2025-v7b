@@ -49,7 +49,7 @@ async function handleChangePassword(formData)
                     <label class="form-label" for="email">Email</label>
                     <input type="email" id="email" v-model="formData.email" class="form-control"
                       placeholder="Email address" />
-                      <p class="text-danger">{{ errors.email[0] }}</p> 
+                      <p v-if="errors?errors.email:false" class="text-danger">{{ errors.email[0] }}</p> 
                    
                     </div>
 

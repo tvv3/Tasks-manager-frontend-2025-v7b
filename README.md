@@ -32,3 +32,7 @@ server: {
 
   npm run dev
 
+## Demo video 
+
+Link: https://youtu.be/BOvmXLB_cBg
+
