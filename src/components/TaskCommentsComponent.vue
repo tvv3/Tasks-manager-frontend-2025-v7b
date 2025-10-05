@@ -98,8 +98,8 @@ async function handleDeleteComment(comment, task)
   <div class="d-lg-flex justify-content-lg-center">
         
    <h2 class="my-4" style="text-align: center;">Task's Comments </h2>
-   <img src="/src/images/check1.webp"
-              alt="Check" width="60px" height="60px" class="my-2">
+   <!--img src="/src/images/check1.webp"
+              alt="Check" width="60px" height="60px" class="my-2"-->
   </div>
   
 <div class="row d-flex justify-content-center">

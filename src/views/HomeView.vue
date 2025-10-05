@@ -4,7 +4,7 @@
 
 <template>
   <main>
-   <h1 class="text-center m-5">Home Page</h1>
+   <h2 class="text-center m-5">Home Page</h2>
      
   </main>
 </template>

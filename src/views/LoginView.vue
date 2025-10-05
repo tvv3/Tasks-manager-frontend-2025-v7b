@@ -40,8 +40,8 @@ onMounted(() => {
               <div class="col-lg-6">
                 <div class="card-body p-md-5 mx-md-4">
                   <div class="text-center">
-                    <h4 class="pb-1 mt-1 mb-1">Task App v7b</h4>
-                    <img src="/src/images/check1.webp" class="mt-1 mb-3" style="width: 60px; height:60px;" alt="logo">
+                    <h4 class="pb-1 mt-1 mb-1">Sign In</h4>
+                    <!--img src="/src/images/check1.webp" class="mt-1 mb-3" style="width: 60px; height:60px;" alt="logo"-->
                   </div>
 
                   <form @submit.prevent="login">

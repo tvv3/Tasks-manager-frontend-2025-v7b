@@ -22,6 +22,7 @@ onMounted(()=>{errors.value={};
 </script>
 <template>
     <div class="container w-50 " style="margin-left: auto; margin-right:auto;">
+    <h2 class="my-4" style="text-align: center;">Create Task</h2>
 <form>
   
   <div class="form-group mb-3">

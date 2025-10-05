@@ -63,8 +63,8 @@ const changePage = (page) => {
               <div class="d-lg-flex justify-content-lg-center">
         
               <h2 class="my-4" style="text-align: center;">Tasks</h2>
-              <img src="/src/images/check1.webp"
-              alt="Check" width="60px" height="60px" class="my-2">
+              <!--img src="/src/images/check1.webp"
+              alt="Check" width="60px" height="60px" class="my-2"-->
               </div>
               <template v-if="isNormalUser()===true">
               <RouterLink id="addNewTaskButton" :to="{name: 'createTask'}" class="btn btn-primary mb-4" style="border-radius: 50%; background-color: blueviolet;"><i class="bi bi-plus" style="font-size:22px;"></i></RouterLink>
@@ -107,7 +107,7 @@ const changePage = (page) => {
 </div>
 </section>
 </template>
-<style>
+<style scoped>
 
 .custom-background{
   background: rgba(126, 64, 246, 1)!important;

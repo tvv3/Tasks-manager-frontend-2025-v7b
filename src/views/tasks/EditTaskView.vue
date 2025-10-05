@@ -34,7 +34,8 @@ else
 </script>
 <template>
     <div class="container w-50 " style="margin-left: auto; margin-right:auto;">
-<form>
+    <h2 class="my-4" style="text-align: center;">Update Task</h2> 
+  <form>
   <div class="form-group mb-3">
     <label for="exampleFormControlTextarea1">Title:</label>
     <textarea class="form-control" v-model="taskData.title" id="exampleFormControlTextarea1" rows="3"></textarea>

@@ -82,8 +82,8 @@ const isManager = ()=>
               <div class="d-lg-flex justify-content-lg-center">
         
               <h2 class="my-4" style="text-align: center;">Task's Team </h2>
-              <img src="/src/images/check1.webp"
-              alt="Check" width="60px" height="60px" class="my-2">
+              <!--img src="/src/images/check1.webp"
+              alt="Check" width="60px" height="60px" class="my-2"-->
               </div>
               <template style="display:block; margin-bottom:30px;margin-top:10px;">
               <template v-if="isManager()==true">
