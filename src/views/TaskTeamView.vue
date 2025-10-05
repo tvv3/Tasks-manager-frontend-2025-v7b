@@ -85,18 +85,19 @@ const isManager = ()=>
               <img src="/src/images/check1.webp"
               alt="Check" width="60px" height="60px" class="my-2">
               </div>
-
+              <template style="display:block; margin-bottom:30px;margin-top:10px;">
               <template v-if="isManager()==true">
                  <CreateTaskTeamMemberComponent :key="keyAddMember" :task_id="task.id" :task_manager_user_id="task.manager_user_id" @reload="async()=>{showLoader=true; await getTask(route.params.task_id).then((mytask)=>{task=mytask;}).finally(()=>{showLoader=false;});}"/>
               </template>
               <template v-else>
                  <button disabled="disabled">Add new member</button>
               </template>
+              </template>
               
 
             </div>
           
-            <div>
+            <div style="padding-left:30px;padding-right: 30px;">
               <table class="table table-responsive mb-4" style="margin-left: auto;margin-right: auto;">
               <thead>
                 <tr>
@@ -113,7 +114,7 @@ const isManager = ()=>
               </table>
             </div>
             <div class="container">
-            <table class="table table-responsive mb-4" style="margin-left: auto;margin-right: auto;">
+            <table class="table table-responsive mb-4" style="margin-left: auto;margin-right: auto;max-width:600px;">
               <thead>
                 <tr>
                   <th scope="col">Team Member</th>

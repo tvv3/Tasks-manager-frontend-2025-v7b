@@ -3,7 +3,7 @@
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useTasksUsersStore } from '@/stores/tasksUsers';
-import { RouterLink } from 'vue-router'; 
+//import { RouterLink } from 'vue-router'; 
 import { storeToRefs } from 'pinia';
 import { onMounted, computed } from 'vue';
 import { defineEmits } from 'vue';
@@ -62,12 +62,12 @@ onMounted(getMembers);
 
 <template>
     <form class="d-flex justify-content-center" >
-    <select v-model="newMember" style="margin-right:10px;font-size: large;line-height:20px;">
+    <select v-model="newMember" style="margin-right:10px;line-height:1rem;min-width:100px;">
         <option v-for="(user) in taskRemainingMembers"
         :value="user.id">{{ user.name }}</option>
     </select>
     
-    <button type="button" @click="createTaskTeamMember()" class="btn btn-primary" style="font-size:large;line-height: 20px;">Add new member</button>
+    <button type="button" @click="createTaskTeamMember()" class="btn btn-primary" style="line-height: 1rem;">Add team member</button>
     </form>
      <!--  Alerta dacă apare eroare -->
      <div v-if="errorMessage" style="color:red;">

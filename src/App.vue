@@ -10,7 +10,7 @@ import {
 
 
 const authStore = useAuthStore();
-console.log('home:',authStore.user);
+//console.log('home:',authStore.user);
 // moved to main.js  !!!!
 
 </script>

@@ -74,7 +74,7 @@ const changePage = (page) => {
              
               </template>
             </div>
-            
+            <div style="padding-left:30px;padding-right:30px;">
             <table class="table table-responsive mb-4" style="margin-left: auto;margin-right: auto;">
               <thead>
                 <tr>
@@ -98,7 +98,7 @@ const changePage = (page) => {
        <PaginationComponent  :elements="tasksStore.tasks" :currentPage="currentPage"
         :changePage="changePage" 
        /> 
-
+           </div>
           </div>
         </div>
 

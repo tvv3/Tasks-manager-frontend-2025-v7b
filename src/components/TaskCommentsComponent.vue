@@ -111,7 +111,7 @@ async function handleDeleteComment(comment, task)
         <p class="text-danger" style="margin-left:30px;font-weight:bold; margin-top:-10px;" v-if="errors?errors.task:false">{{ errors.task[0] }}</p> 
                    
       </div>
-      <div class="container">
+      <div class="container" style="padding-left:30px; padding-right:30px;">
       <div class="card-body p-2">
         <div class="text-center mb-4"><button
           class="btn btn-primary btn-block fa-lg mb-1"
@@ -120,7 +120,7 @@ async function handleDeleteComment(comment, task)
          {{ showAddCommentForm ? 'Hide Add Comment Form' : 'Show Add Comment Form' }}
         </button>
         </div>
-        <div data-mdb-input-init v-if="showAddCommentForm" class="form-outline mb-4">
+        <div data-mdb-input-init v-if="showAddCommentForm" class="form-outline mb-4" style="padding-left:30px; padding-right:30px;">
           <textarea class="form-control" id="addAComment" rows="3"
                   v-model="formCommentData.comment"
                   style="background: #fff;"></textarea>
@@ -135,13 +135,14 @@ async function handleDeleteComment(comment, task)
           </div>
         </div>
         
-        <hr> 
+        <hr style="margin-left: 30px;margin-right: 30px;"> 
         
        <template v-if="tasksCommentsStore.tasksComments"> 
            <template v-if="tasksCommentsStore.tasksComments.data">
             <template v-if="tasksCommentsStore.tasksComments.data.length>0">     
-            Comments:    
-                   <TaskCommentComponent v-for="(comment, index) in tasksCommentsStore.tasksComments.data" :task="task"
+            <div style="color:blueviolet;font-weight:bold; margin-top:10px; margin-bottom: 20px;padding-left:30px; padding-right:30px;">Comments:</div>   
+            <div style="padding-left: 30px; padding-right: 30px;">
+            <TaskCommentComponent v-for="(comment, index) in tasksCommentsStore.tasksComments.data" :task="task"
                     :index="index+1"  :key="comment.id"  :comment="comment" :auth_user="user"
                     @updateComment="handleUpdateComment($event, comment, task)"
                     
@@ -151,14 +152,17 @@ async function handleDeleteComment(comment, task)
                    </TaskCommentComponent>
 
                     <!--@reload="reloadTask(task)"-->
-          </template>
+          
           <PaginationComponent  :elements="tasksCommentsStore.tasksComments" :currentPage="currentPage"
         :changePage="changePage" 
        />
+         </div>
+        </template>
        </template>
       </template>
        
       </div>
+      
       </div><!--container-->
     </div>
   </div>
