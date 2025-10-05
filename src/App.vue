@@ -67,7 +67,7 @@ const authStore = useAuthStore();
       </div>
     </header>
    
-    <h1 class="text-center" style="color:blueviolet;"> Tasks Manager App Vs.7b </h1>
+    <h1 class="text-center" style="color:blueviolet;"> Tasks Manager App v.7b </h1>
 
     <RouterView />
     
