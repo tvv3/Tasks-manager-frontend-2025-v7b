@@ -25,7 +25,8 @@ function vizible_page(nrpage, currentpage, lastpage)
   
    //console.log((nrpage<=3)&&(nrpage<=lastpage));
   if (currentpage==1) return (nrpage<4)&&(nrpage<=lastpage);
-  if (currentpage==lastpage) return (nrpage>=lastpage-2)&&(nrpage>=1);
+  if (currentpage>=lastpage) return (nrpage>=lastpage-2)&&(nrpage>=1);
+  
   return (nrpage>=currentpage-1)&&(nrpage<=currentpage+1)&&(nrpage<=lastpage)&&(nrpage>=1);
 }
 </script>

@@ -6,7 +6,7 @@ export const useTasksCommentsStore = defineStore("TasksCommentsStore", {
   state: () => ({
     errors: {},
     comment_id: null, //for update and delete
-    tasksComments: ref([]),
+    tasksComments: ref({data:[]}),
     myserver: "http://localhost:8000/api",
   }),
 
@@ -74,7 +74,7 @@ export const useTasksCommentsStore = defineStore("TasksCommentsStore", {
     async getTasksComments(task, currentPage) {
       this.comment_id = null;
       const authStore = useAuthStore();
-
+      this.tasksComments.data =[];//initializare
       if (
         authStore.user.user_role.role === "admin" ||
         authStore.user.id === task.manager_user_id ||

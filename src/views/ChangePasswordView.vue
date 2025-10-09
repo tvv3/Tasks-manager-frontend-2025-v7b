@@ -2,6 +2,7 @@
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import { onMounted, reactive } from 'vue';
+//import _ from 'lodash';
 const {user, errors, successMessage} = storeToRefs(useAuthStore());
 const {changePassword} = useAuthStore();
 const formData=reactive({
@@ -16,7 +17,9 @@ async function handleChangePassword(formData)
   
   await changePassword(formData).then((value)=>{
     
-    if ((Object.keys(errors.value).length === 0)&&(successMessage.value!=null)) {alert(successMessage.value);}
+    if ((Object.keys(errors.value).length === 0)
+    //(_.isEmpty(errors.value))
+        &&(successMessage.value!=null)) {alert(successMessage.value);}
     else { alert('Error ');}
   }).catch((reason)=>{console.log('reason=',reason);alert("Error at changing password");});
  // .finally(()=>{console.log(errors.value);});

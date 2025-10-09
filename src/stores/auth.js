@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
-
+import { ref } from "vue";
 
 export const useAuthStore = defineStore("AuthStore", {
   state: () => ({
-    user: null,
+    user: ref(null),
     errors: {},
     successMessage: null,
     apiBase: "http://localhost:8000/api",
@@ -14,8 +14,10 @@ export const useAuthStore = defineStore("AuthStore", {
     // Fetch logged-in user
     async getUser() {
       try {
-       
         console.log('getUser');
+        await fetch(`${this.apiBase}/sanctum/csrf-cookie`, {
+      credentials: "include",
+       });
         //2 The actual getUser 
         const res = await fetch(`${this.apiBase}/user`, {
           headers: {
@@ -29,6 +31,7 @@ export const useAuthStore = defineStore("AuthStore", {
         if (res.ok) {
           console.log('data get user=',data);
           this.user = data.user;
+          console.log(this.user);
           this.errors = {};
         } else {
           this.user = null;
@@ -80,14 +83,14 @@ export const useAuthStore = defineStore("AuthStore", {
     } else {
       // Login reușit
       this.errors = {};
-      console.log('data.user=',data.user);
+     // console.log('data.user=',data.user);
       this.user = data.user; // Laravel poate returna user
       this.successMessage = "Successfully logged in!";
       
       // Redirect către home
-      if (this.router) {
+      //if (this.router) {
         this.router.push({ name: "home" });
-      }
+      //}
 
       // Opțional: fetch user din sesiune
       // await this.getUser();
@@ -120,9 +123,9 @@ export const useAuthStore = defineStore("AuthStore", {
         if (res.ok) {
           this.user = null;
           this.successMessage = "Logged out successfully!";
-          if (this.router) {
+          //if (this.router) {
             this.router.push({ name: "home" });//mandatory
-             }
+            // }
         } else {
           const data = await res.json();
           this.errors = { logout: [data.message || "Logout failed"] };

@@ -2,6 +2,7 @@
 import TaskComponent from '@/components/TaskComponent.vue';
 import PaginationComponent from '@/components/PaginationComponent.vue';
 import router from '@/router';
+//import _ from 'lodash';
 import { useAuthStore } from '@/stores/auth';
 import { useTasksStore } from '@/stores/tasks';
 import { storeToRefs } from 'pinia';
@@ -11,16 +12,17 @@ import { nextTick } from 'vue';
 //const {errors} = storeToRefs(useTasksStore());
 //const {getTaskById} = storeToRefs(useTasksStore());
 //const {tasks} = storeToRefs(useTasksStore());
-const {mytasks} = storeToRefs(useTasksStore());
+const {mytasks, errors} = storeToRefs(useTasksStore());
 const {user} = storeToRefs(useAuthStore());
 const tasksStore = useTasksStore();
 //const tasks2=tasksStore.tasks.data;
 const currentPage=ref(1);//mandatory 1
 const route=useRoute();
 
-onMounted( ()=> {
+onMounted( async ()=> {
+ errors.value={};
  currentPage.value = route.query.page ? parseInt(route.query.page) : 1;
- tasksStore.getTasks(route.query.page ? parseInt(route.query.page) : 1);
+ await tasksStore.getTasks(route.query.page ? parseInt(route.query.page) : 1);
 }
 
 );
@@ -31,6 +33,17 @@ function isNormalUser()
   if (!user.value.user_role) return false;
   if (!user.value.user_role.role) return false;//mandatory, at the begining we don't have the role
   return user.value.user_role.role=="user";
+}
+
+async function handleDeleteTaskParent(task)
+{
+  const ok=await tasksStore.deleteTask(task);
+  console.log('123');
+  if (ok) 
+  {
+     await tasksStore.getTasks(currentPage.value);
+     if (Object.keys(mytasks.value).length===0) {router.push({ name: 'tasks', query: { page: 1 } });}
+  }
 }
 
 //for pagination
@@ -75,6 +88,7 @@ const changePage = (page) => {
               </template>
             </div>
             <div style="padding-left:30px;padding-right:30px;">
+             <p class="d-block text-danger" style="margin-left:30px;font-weight:bold; margin-top:-10px;" v-if="errors?errors.form:false">{{ errors.form[0] }}</p> 
             <table class="table table-responsive mb-4" style="margin-left: auto;margin-right: auto;">
               <thead>
                 <tr>
@@ -88,7 +102,9 @@ const changePage = (page) => {
                 <template v-if="mytasks"> 
                   <template v-if="mytasks.length>0">       
                    <TaskComponent v-for="(task, index) in mytasks" :task="task"
-                    :index="index+1"  :key="task.id" />
+                    :index="index+1"  :key="task.id" 
+                    @deleteTask="handleDeleteTaskParent(task)"
+                    />
                    
                 </template>
                 </template>

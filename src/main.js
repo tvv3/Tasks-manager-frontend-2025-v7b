@@ -28,21 +28,22 @@ app.use(pinia);
 
 
 
-
 // Initialize auth store
 const authStore = useAuthStore();
 
 // First, fetch user from session (if logged in)
 // Fetch CSRF cookie first
 /*
-fetch('http://localhost:8000/api/sanctum/csrf-cookie', {
+await fetch('http://localhost:8000/api/sanctum/csrf-cookie', {
     method: 'GET',
     credentials: 'include'  // important for sending cookies
 }).then(() => {
     // Now safe to get user
-    //return authStore.getUser();
+   // authStore.getUser();
+   // console.log('user main js=',authStore.user);
 }).finally(() => {
- */  
+  */
     app.use(router);
     app.mount('#app');
 //});
+

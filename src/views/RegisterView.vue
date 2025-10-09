@@ -2,6 +2,7 @@
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import { onMounted, reactive } from 'vue';
+//import _ from 'lodash';
 const {user, errors, successMessage} = storeToRefs(useAuthStore());
 const {registerUser} = useAuthStore();
 const formData=reactive({
@@ -15,7 +16,9 @@ async function handleRegister(formData)
 {
   console.log(formData);
   await registerUser(formData).then(()=>{//console.log('value=',value);
-   if ((Object.keys(errors.value).length === 0)&&(successMessage.value)) 
+   if ((Object.keys(errors.value).length === 0)
+   //(_.isEmpty(errors.value))
+       &&(successMessage.value)) 
    {alert(successMessage.value);}
     else alert('Error ');
  }).catch((reason)=>{console.log('reason=',reason);

@@ -10,7 +10,7 @@ const {changeTaskStatus, deleteTask}=useTasksStore();
 const {user} = storeToRefs(useAuthStore());
 
 
-const emit = defineEmits(['reload'])
+const emit = defineEmits(['reload','deleteTask'])
 
 const triggerReload = () => {
   console.log("reloaded1");
@@ -23,7 +23,22 @@ const triggerReload2 = () => {
   emit('reload');
  // console.log("reloaded2");
 }
-
+/*
+async function handleDeleteTask(task)
+{
+  //showLoader.value=true;
+  await deleteTask(task).then(
+    (value)=> { console.log(value);
+  if (value===true) { console.log('refresh after delete '); return true;}
+  //tasksCommentsStore.getTasksComments(task, route.query.page ? parseInt(route.query.page) : 1);
+  //not necessary because if it doesn't delete it refreshes and i don't get the solution
+    })
+  .finally(()=>{//showLoader.value=false
+     console.log('task was deleted');
+  }) ;
+  return false;
+}
+*/
 function isAdminOrManager()
 {
   if (!user.value) return false;
@@ -90,7 +105,7 @@ function isManagerOrTeamUser()
                     </template>
 
                    <template v-if="isAdminOrManager()===true">
-                    <button type="button"  title="Delete" style="border:none;background-color: transparent;" @click="deleteTask(props.task);triggerReload2();"><i
+                    <button type="button"  title="Delete" style="border:none;background-color: transparent;" @click="()=>{emit('deleteTask');}"><i
                         class="bi bi-trash text-danger"></i></button>
                    </template>
                    <template v-else>

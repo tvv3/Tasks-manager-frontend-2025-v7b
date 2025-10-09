@@ -8,7 +8,9 @@ import RegisterView from '@/views/RegisterView.vue'
 import ChangePasswordView from '@/views/ChangePasswordView.vue'
 import CreateTaskView from '@/views/tasks/CreateTaskView.vue'
 import EditTaskView from '@/views/tasks/EditTaskView.vue'
+//import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
+import { reactive } from 'vue'
 
 const routes = [
   { path: '/', name: 'home', component: HomeView },
@@ -29,21 +31,30 @@ const router = createRouter({
 
 // Global guard for route authentication
 router.beforeEach(async (to, from) => {
-  const authStore = useAuthStore()
-
+  
+  console.log(to);
+ 
+  const authStore=useAuthStore();//must be put here not on top
+  let user=authStore.user; 
   // If user is not loaded, try to fetch user from backend
-  /*if (!authStore.user) {
-    await authStore.getUser()
-  }*/
-
+  //console.log('user1=',user);
+  if (user===null) {
+    console.log('get user from index.js');
+    await authStore.getUser();
+    user=await authStore.user;//mandatory with await to actualy refresh the user variable from store!!!!
+  }
+   console.log('user2=',user);
   // Redirect logged-in users away from guest-only pages
-  if (authStore.user && to.meta.guest) {
+  if (user!=null && to.meta.guest!=null) {
+    console.log('go to home');
     return { name: 'home' }
   }
 
   // Redirect guests trying to access auth-protected pages
-  if (!authStore.user && to.meta.auth) {
-    return { name: 'login' }
+  if (user==null && to.meta.auth!=null) {
+    //
+    console.log('go to login');
+    return { name: 'login' };
   }
 
   // check if user is task manager before editing

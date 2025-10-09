@@ -11,8 +11,8 @@ import { storeToRefs } from 'pinia';
 import { computed, onBeforeMount, onMounted, reactive, ref, watch } from 'vue';
 import { useRoute, onBeforeRouteUpdate } from 'vue-router';
 //import { nextTick } from 'vue';
-//const {errors} = storeToRefs(useTasksStore());
-const {getTask} = useTasksStore();
+const {errors} = storeToRefs(useTasksStore());
+const {getTask, deleteTask} = useTasksStore();
 //const {team} = storeToRefs(useTeamStore());
 
 const {user} = storeToRefs(useAuthStore());
@@ -26,22 +26,25 @@ task_id.value=route.params.task_id;
 const showLoader=ref(false);
 const fetchTask=
 
-  async()=>{showLoader.value=true; await getTask(route.params.task_id).then((mytask)=>{task.value=mytask;}).finally(()=>{showLoader.value=false;});};
+  async()=>{errors.value={};showLoader.value=true; await getTask(route.params.task_id).then((mytask)=>{task.value=mytask;}).finally(()=>{showLoader.value=false;});};
 
 const keyAddMember=ref(0);
 const refreshCreateTaskTeamMemberComponent=()=>{
   keyAddMember.value++;
 };
 
-onMounted(async()=>{showLoader.value=true; await getTask(route.params.task_id).then((mytask)=>{task.value=mytask;}).finally(()=>{showLoader.value=false;}); console.log('mounted');});
+onMounted(
+
+async()=>{errors.value={};showLoader.value=true; await getTask(route.params.task_id).then((mytask)=>{task.value=mytask;}).finally(()=>{showLoader.value=false;}); console.log('mounted');});
 
 
 const isAdminOrManagerOrTeamMember = () =>
 {
-  console.log(user.value.id);
-  console.log("task123:", task.value);
+ // console.log(user.value.id);
+ // console.log("task123:", task.value);
   if (!task.value) return false;
   if (!user.value) return false;
+  if (!task.value.manager.id) return false;
   if (user.value.user_role.role=="admin") return true;
   if (user.value.id==task.value.manager.id) return true;
   if (task.value.users)
@@ -65,7 +68,16 @@ const isManager = ()=>
   if (user.value.id==task.value.manager.id) {return true;}
   return false;
 };
-
+async function handleDeleteTaskParent2(task)
+{
+  const ok=await deleteTask(task);
+  console.log('123');
+  if (ok) 
+  {
+    router.push({name: 'tasks'});
+   }
+}  
+                   
 </script>
 <template>
     <section>
@@ -98,6 +110,7 @@ const isManager = ()=>
             </div>
           
             <div style="padding-left:30px;padding-right: 30px;">
+               <p class="d-block text-danger" style="margin-left:30px;font-weight:bold; margin-top:-10px;" v-if="errors?errors.form:false">{{ errors.form[0] }}</p> 
               <table class="table table-responsive mb-4" style="margin-left: auto;margin-right: auto;">
               <thead>
                 <tr>
@@ -109,7 +122,9 @@ const isManager = ()=>
               </thead>
               <tbody>
                 <TaskComponent :task="task"
-                    index="0"  :key="task.id" @reload="()=>{fetchTask(); router.push({name: 'tasks'});}" />
+                    index="0"  :key="task.id" 
+                    @deleteTask="handleDeleteTaskParent2(task)"
+                    @reload="async ()=>{ await fetchTask();}" />
               </tbody>
               </table>
             </div>
@@ -125,7 +140,7 @@ const isManager = ()=>
                 <template v-if="task.users"> 
                   <template v-if="task.users.length>0">       
                    <TeamMemberComponent v-for="(user, index) in task.users" :user="user"  :task="task"
-                    :index="index"  :key="user.id" @reload="()=>{fetchTask();refreshCreateTaskTeamMemberComponent();/*router.push({name: 'taskTeam', params: {'task_id': props.task.id}});*/}"/>
+                    :index="index"  :key="user.id" @reload="async ()=>{await fetchTask(); refreshCreateTaskTeamMemberComponent();/*router.push({name: 'taskTeam', params: {'task_id': props.task.id}});*/}"/>
                 </template>
                 <template v-else>
                      There is no team defined for this task!

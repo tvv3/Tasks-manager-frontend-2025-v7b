@@ -24,6 +24,7 @@ const currentPage=ref(1);//mandatory 1
 const showLoader=ref(true);
 //console.log(localStorage.getItem('token'));
 onMounted(async ()=> {
+  errors.value={};
   showLoader.value=true;
   console.log(true);
   await tasksStore.getTask(route.params.task_id).then(
@@ -41,7 +42,7 @@ onMounted(async ()=> {
    showLoader.value=false;
   }
 ); 
-   console.log(tasksComments.value);
+   //console.log(tasksComments.value);
    }
 
   ).finally(()=>{showLoader.value=false; console.log("finally");}); 
@@ -82,13 +83,34 @@ await updComment(newCommentFromChild, comment, task)
 
 async function handleDeleteComment(comment, task)
 {
+  let ok;
+  
   showLoader.value=true;
   await tasksCommentsStore.deleteTasksComment(comment).then(
     (value)=> {
-  if (value===true) tasksCommentsStore.getTasksComments(task, route.query.page ? parseInt(route.query.page) : 1);
+  if (value===true) {
+    ok=true;
+   
+    //tasksCommentsStore.getTasksComments(task, route.query.page ? parseInt(route.query.page) : 1);
+     }
+ 
+  }
   //not necessary because if it doesn't delete it refreshes and i don't get the solution
-    })
-  .finally(()=>{showLoader.value=false}) ;
+    )
+  .finally(()=>{if (!ok) {showLoader.value=false;}});
+                 
+   if (ok)
+  {
+     
+      await tasksCommentsStore.getTasksComments(task, route.query.page ? parseInt(route.query.page) : 1);
+    
+       if (Object.keys(tasksComments.value.data).length===0) {
+      //router.push('taskComments/'+task.id+'?page=1');
+         await  router.push({ path: `/taskComments/${task.id}`, query: { page: 1 } });  
+        }
+       showLoader.value=false;  
+                     
+  } 
 }
 
 </script>

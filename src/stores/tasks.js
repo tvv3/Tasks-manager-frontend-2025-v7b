@@ -5,7 +5,7 @@ import { ref } from "vue";
 export const useTasksStore = defineStore("TasksStore", {
   state: () => ({
     errors: {},
-    tasks: ref([]),
+    tasks: ref({data:[]}),
     mytasks: ref([]),
     myserver: "http://localhost:8000/api",
   }),
@@ -102,25 +102,43 @@ export const useTasksStore = defineStore("TasksStore", {
           });
 
           const data = await res.json();
-
-          if (data.errors) {
-            this.errors = data.errors;
-            console.log(data.errors);
-          } else {
-            console.log("task deleted successfully");
-            // update mytasks and tasks arrays to reflect deletion
-            const taskIndex = this.mytasks.findIndex((t) => t.id === task.id);
+          if (!res.ok) {
+            this.errors = { form: [data.message || "Error deleting task"] };
+            console.log(1, data.message);
+          } else if (data !== null && !(Array.isArray(data) && data.length === 0)) {
+            if (data.errors) {
+              this.errors = data.errors;
+              console.log(2);
+            } else {
+              this.errors = {};
+              const taskIndex = this.mytasks.findIndex((t) => t.id === task.id);
             if (taskIndex !== -1) this.mytasks.splice(taskIndex, 1);
 
             const taskIndex2 = this.tasks.data.findIndex((t) => t.id === task.id);
             if (taskIndex2 !== -1) this.tasks.data.splice(taskIndex2, 1);
+         
+              console.log("Successfully deleted task:", data.message || "");
+              console.log(3);
+              return true;
+            }
+          } else {
+            this.errors = { form: ["Error at task delete! No data fetched!"] };
+            console.log(4);
           }
-        } catch (err) {
-          console.log(err.message);
+        } catch (error) {
+          this.errors = { form: ["Network error or server is unreachable. " + error.message] };
+          console.log(5);
+        } finally {
+          console.log("end delete task");
         }
       } else {
-        console.log("Not authorized! You cannot delete this task!");
+        this.errors = { comment: ["Not authorized! You cannot delete this task!"] };
+        console.log('6');
       }
+
+      return false;//on any error if not returned true already; 
+
+
     },
 
     /************************* changeTaskStatus ***************/
@@ -207,6 +225,8 @@ export const useTasksStore = defineStore("TasksStore", {
 
           const data = await res.json();
 
+          
+          
           if (data.errors) {
             this.errors = data.errors;
           } else {
@@ -223,6 +243,8 @@ export const useTasksStore = defineStore("TasksStore", {
 
     /************************* getTasks ***************/
     async getTasks(currentPage) {
+      this.tasks.data=[];
+      this.mytasks=[];
       try {
         const res = await fetch(`${this.myserver}/tasks?page=${currentPage}`, {
           method: "GET",
@@ -237,6 +259,30 @@ export const useTasksStore = defineStore("TasksStore", {
         const data = await res.json();
 
         if (!res.ok) {
+            this.errors = { form: [data.message || "Error fetching tasks for this page"] };
+          } else if (data !== null && !(Array.isArray(data) && data.length === 0)) {
+            if (data.errors) {
+              this.errors = data.errors;
+            } else if (data.message) {
+              this.errors = { form: [data.message] };
+            } else {
+              this.errors = {};
+              this.tasks = data;
+              this.mytasks = data.data;
+              console.log("Successfully fetched tasks for page " + currentPage);
+            }
+          } else {
+            this.errors = { form: ["No tasks fetched for this page!"] };
+          }
+        } catch (error) {
+          this.errors = { form: ["Network error or server is unreachable. " + error.message] };
+        } finally {
+          console.log("end getTasks");
+        }
+    
+      //end from comments
+      /*
+        if (!res.ok) {
           console.log(res.status);
           throw new Error("Failed to fetch tasks");
         }
@@ -250,6 +296,7 @@ export const useTasksStore = defineStore("TasksStore", {
         this.errors = error.message;
         console.error("Error fetching tasks:", error.message);
       }
+        */
     },
   },
 });
